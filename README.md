@@ -124,7 +124,7 @@ npm start
 Frontend will run on ➜ http://localhost:4200
 ________________________________________________________________________________________________________________________
 
-10. Functional Validation
+**Functional Validation**
 - User registration and login (Postman + UI)
 - JWT-based session management
 - Task CRUD operations
@@ -134,5 +134,5 @@ ________________________________________________________________________________
 
 ________________________________________________________________________________________________________________________
 
-11. Future Enhancements
+**Future Enhancements**
 Interactive documentation using Swagger
