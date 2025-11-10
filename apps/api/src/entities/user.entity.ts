@@ -1,25 +1,28 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
-export enum UserRole {
-  OWNER = 'owner',
-  ADMIN = 'admin',
-  VIEWER = 'viewer',
-}
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
+import { Task } from './task.entity';
+import { Organization } from './organization.entity';
+import { UserRole } from '../auth/user-role.enum';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column()
-  passwordHash: string;
+  passwordHash!: string;
 
   @Column({
     type: 'text',
     default: UserRole.VIEWER,
   })
-  role: UserRole;
+  role!: UserRole;
+
+  @OneToMany(() => Task, (task) => task.owner)
+  tasks!: Task[];
+
+  @ManyToOne(() => Organization, (org) => org.users, { onDelete: 'SET NULL' })
+  organization!: Organization;
 }

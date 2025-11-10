@@ -3,20 +3,20 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeor
 @Entity()
 export class AuditLog {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  action: string;            // CREATE / UPDATE / DELETE
+  action!: string;            // CREATE / UPDATE / DELETE
 
   @Column()
-  entityType: string;        // e.g. "Task"
+  entityType!: string;        // e.g. "Task"
 
   @Column({ nullable: true })
-  entityId: string;
+  entityId!: string;
 
   @Column({ nullable: true })
-  performedBy: string;       // user email
+  performedBy!: string;       // user email
 
   @CreateDateColumn()
-  timestamp: Date;
+  timestamp!: Date;
 }

@@ -1,35 +1,55 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
-import { User, UserRole } from '../entities/user.entity';
-import * as bcrypt from 'bcryptjs';
+import { User } from '../entities/user.entity';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+import { UserRole } from '../auth/user-role.enum'; 
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private readonly userRepo: Repository<User>,
-    private readonly jwtService: JwtService,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
   ) {}
 
-  async register(email: string, password: string, role: UserRole = UserRole.VIEWER) {
-    const existing = await this.userRepo.findOne({ where: { email } });
-    if (existing) throw new Error('User already exists');
-    const passwordHash = await bcrypt.hash(password, 10);
-    const user = this.userRepo.create({ email, passwordHash, role });
+  /**
+   * Register a new user
+   */
+  async register(dto: RegisterDto): Promise<User> {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(dto.password, salt);
+
+    const user = this.userRepo.create({
+      email: dto.email,
+      passwordHash: hash, // must match entity column name
+      role: dto.role ?? UserRole.VIEWER,
+    });
+
     return this.userRepo.save(user);
   }
 
-  async validateUser(email: string, password: string) {
-    const user = await this.userRepo.findOne({ where: { email } });
-    if (!user) throw new UnauthorizedException('Invalid credentials');
-    const isMatch = await bcrypt.compare(password, user.passwordHash);
-    if (!isMatch) throw new UnauthorizedException('Invalid credentials');
-    return user;
-  }
+  /**
+   * Login existing user
+   */
+  async login(dto: LoginDto): Promise<{ access_token: string }> {
+    const user = await this.userRepo.findOne({ where: { email: dto.email } });
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
 
-  async login(user: User) {
+    const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
     const payload = { sub: user.id, email: user.email, role: user.role };
-    return { access_token: this.jwtService.sign(payload) };
+    const token = jwt.sign(payload, process.env.JWT_SECRET || 'defaultsecret', {
+      expiresIn: '1h',
+    });
+
+    return { access_token: token };
   }
 }
