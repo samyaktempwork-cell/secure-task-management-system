@@ -1,4 +1,6 @@
 # Secure Task Management System
+<img width="1920" height="838" alt="screencapture-localhost-4200-login-2025-11-11-01_38_59" src="https://github.com/user-attachments/assets/7054200d-2a8a-46c8-9fbf-b1ca50590f04" />
+
 
 A full-stack **Task Management System** built using **NestJS + TypeORM (SQLite)** with support for:
 - Authentication (JWT)
