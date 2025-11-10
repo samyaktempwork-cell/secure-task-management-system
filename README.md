@@ -125,12 +125,12 @@ Frontend will run on ➜ http://localhost:4200
 ________________________________________________________________________________________________________________________
 
 10. Functional Validation
-User registration and login (Postman + UI)
-JWT-based session management
-Task CRUD operations
-CORS configured for Angular frontend
-Role-based access (Admin / Viewer)
-Task status tracking (In-progress, Completed)
+- User registration and login (Postman + UI)
+- JWT-based session management
+- Task CRUD operations
+- CORS configured for Angular frontend
+- Role-based access (Admin / Viewer)
+- Task status tracking (In-progress, Completed)
 
 ________________________________________________________________________________________________________________________
 
