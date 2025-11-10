@@ -103,3 +103,36 @@ You should see:
     entityId	UUID of entity
     performedBy	User email
     timestamp	Action time
+
+### **FrontEnd**
+### **1. Install Dependencies**
+Run this from the root of the Nx project:
+```bash
+npm install
+```
+### **2. Serve the Frontend
+Move into the frontend app and start the dev server:
+
+```bash
+npx nx serve frontend
+```
+or directly from its folder:
+```bash
+cd apps/frontend
+npm start
+```
+Frontend will run on ➜ http://localhost:4200
+________________________________________________________________________________________________________________________
+
+10. Functional Validation
+User registration and login (Postman + UI)
+JWT-based session management
+Task CRUD operations
+CORS configured for Angular frontend
+Role-based access (Admin / Viewer)
+Task status tracking (In-progress, Completed)
+
+________________________________________________________________________________________________________________________
+
+11. Future Enhancements
+Interactive documentation using Swagger
